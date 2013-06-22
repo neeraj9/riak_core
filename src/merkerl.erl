@@ -87,15 +87,15 @@
 % This is the key, or "name" for an object tracked by a Merkle tree.
 % It should remain constant through changes to the object it references.
 % It is expected to be a 160b binary, as produced by
-% crypto:sha/1 -- if the natural names of objects are not such values,
-% then simply crypto:sha(term_to_binary(the-name>).
+% crypto:hash/2 -- if the natural names of objects are not such values,
+% then simply crypto:hash(sha, term_to_binary(the-name>).
 
 % @type hash() = binary().
 % This is a hash representing a unique content value for an object
 % tracked by a Merkle tree.
 % It should change if the object it references changes in value.
 % It is expected to be a 160b binary, as produced by
-% crypto:sha/1 -- crypto:sha(term_to_binary(value)) is the canonical
+% crypto:hash/2 -- crypto:hash(sha, term_to_binary(value)) is the canonical
 % way to produce a hash().
 
 % %spec build_tree([kh()]) -> tree()
@@ -324,7 +324,7 @@ getkids(Tree) ->
     [V || {_K,V} <- orddict:to_list(Tree#merk.children)].
 
 sha(X) ->
-    crypto:sha(term_to_binary(X)).
+    crypto:hash(sha, term_to_binary(X)).
 
 -ifdef(TEST).
 -include_lib("eunit/include/eunit.hrl").
